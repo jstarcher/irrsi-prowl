@@ -1,5 +1,10 @@
 ## 1) Replace <YOUR API KEY> with an API key generated at https://www.prowlapp.com/api_settings.php
-## 2) Put me in ~/.irssi/scripts, and then execute the following in irssi:
+## 2) Install dependencies:
+##
+##        [Ubuntu] sudo apt-get install libwww-perl
+##        cpan install Mozilla::CA
+##
+## 3) Put me in ~/.irssi/scripts, and then execute the following in irssi:
 ##
 ##       /load perl
 ##       /script load notify
@@ -39,6 +44,7 @@ sub notify {
     # Make the message entity-safe.
     encode_entities($message);
 
+    my %options = ();
     $options{'apikey'} = '<YOUR API KEY>';
 
     # Generate our HTTP request.
@@ -49,7 +55,7 @@ sub notify {
     $requestURL = sprintf("https://prowlapp.com/publicapi/add?apikey=%s&application=%s&event=%s&description=%s&priority=%d",
             $options{'apikey'},
             'irssi',
-            'summary',
+            $summary,
             $message,
             0);
     
@@ -71,8 +77,12 @@ sub print_text_notify {
     my $server = $dest->{server};
 
     return if (!$server || !($dest->{level} & MSGLEVEL_HILIGHT));
-    notify($server, $dest->{target}, $stripped);
+    my $sender = $stripped;
+    $sender =~ s/^\<.([^\>]+)\>.+/\1/ ;
+    my $summary = $sender . "@" . $dest->{server}->{tag} . $dest->{target};
 
+    $stripped =~ s/^\<.[^\>]+\>.// ;
+    notify($server, $summary, $text);
 }
 
 sub message_private_notify {
