@@ -7,13 +7,14 @@ Sends notifications to your iOS device via Prowl on direct messages and highligh
 
 Installation
 ------------
-1) Replace <YOUR API KEY> in notify.pl with an API key generated at https://www.prowlapp.com/api_settings.php
-2) Install dependencies:
+1. Replace <YOUR API KEY> in notify.pl with an API key generated at [prowlapp.com](https://www.prowlapp.com/api_settings.php).
+
+2. Install dependencies:
 
         [Ubuntu] sudo apt-get install libwww-perl
         cpan install Mozilla::CA
 
-3) Put notify.pl in ~/.irssi/scripts, and then execute the following in irssi:
+3. Put notify.pl in ~/.irssi/scripts, and then execute the following in irssi:
 
-       /load perl
-       /script load notify
+        /load perl
+        /script load notify
